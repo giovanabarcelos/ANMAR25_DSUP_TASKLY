@@ -29,4 +29,14 @@ export class TaskService {
     })
     return task
   }
+
+  async getTaskByStatus(status: string): Promise<TaskCard[]> {
+    return await taskCardRepository.find({
+      where: { status },
+      relations: ["notes"],
+      order: {
+        created_at: "DESC",
+      },
+    })
+  }
 }

@@ -37,4 +37,18 @@ export class TaskController {
       next(error)
     }
   }
+
+  async getByStatus(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try{
+      const { status } = req.params
+      const validStatus = ['Todo', 'In Progress', 'Done']
+      if (!validStatus.includes(status)) {
+        return res.status(400).json({ message: 'Invalid Status!' })
+      }
+      const task = await service.getTaskByStatus(status)
+      res.status(200).json(task)
+    } catch(error) {
+      next(error)
+    }
+  }
 }
