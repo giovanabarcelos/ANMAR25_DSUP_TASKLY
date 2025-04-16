@@ -21,4 +21,12 @@ export class TaskService {
       },
     })
   }
+
+  async getTaskById(id: number): Promise<TaskCard | null> {
+    const task = await taskCardRepository.findOne({
+      where: { id },
+      relations: ["notes"],
+    })
+    return task
+  }
 }

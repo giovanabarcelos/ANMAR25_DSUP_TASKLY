@@ -6,6 +6,8 @@ const routes = Router()
 const controller = new TaskController()
 
 routes.post('/tasks', validateTask, controller.create.bind(controller))
-routes.get("/tasks", controller.list.bind(controller))
+routes.get('/tasks', controller.list.bind(controller))
+routes.get('/tasks/:id', controller.getTask.bind(controller))
+
 
 export default routes
