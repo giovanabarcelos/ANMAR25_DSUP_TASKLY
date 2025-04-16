@@ -1,4 +1,4 @@
-import { taskRepository } from "../repositories/taskRepository"
+
 import { taskCardRepository } from "../repositories/taskCardRepository"
 import { TaskCard } from "../entities/TaskCard"
 
@@ -6,8 +6,8 @@ import { TaskCard } from "../entities/TaskCard"
 export class TaskService {
   async create(data: Partial<TaskCard>): Promise<TaskCard> {
     try {
-      const task = taskRepository.create(data)
-      return await taskRepository.save(task)
+      const task = taskCardRepository.create(data)
+      return await taskCardRepository.save(task)
     } catch (error: any) {
       throw new Error(`Error creating task: ${error.message}`)
     }
@@ -50,6 +50,24 @@ export class TaskService {
       return await taskCardRepository.save(task)
     } catch(error: any) {
       throw new Error(`Error updating task: ${error.message}`)
+    }
+  }
+  async delete(id: number): Promise<void> {
+    try{
+      const task = await taskCardRepository.findOne({
+        where: { id },
+        relations: ["notes"],
+      })
+      if(!task) {
+        throw new Error("Task not found")
+      }
+      for(const note of task.notes) {
+        note.taskCard = null
+        await taskCardRepository.manager.save(note)
+      }
+      await taskCardRepository.delete(id)
+    }catch(error: any) {
+      throw new Error(`Error deleting task: ${error.message}`)
     }
   }
 }

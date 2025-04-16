@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToOne,
+    JoinColumn,
   } from "typeorm"
   import { TaskCard } from "./TaskCard"
   
@@ -22,7 +23,9 @@ import {
     @UpdateDateColumn()
     updated_at: Date
   
-    @ManyToOne(() => TaskCard, (task) => task.notes, { onDelete: 'CASCADE' })
-    task: TaskCard
+    @ManyToOne(() => TaskCard, (taskCard) => taskCard.notes, { onDelete: 'SET NULL' }) 
+
+    @JoinColumn({ name: 'taskId' })
+    taskCard: TaskCard | null;
   }
   

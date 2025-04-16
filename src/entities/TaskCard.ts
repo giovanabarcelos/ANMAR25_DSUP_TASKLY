@@ -34,7 +34,7 @@ import {
     @UpdateDateColumn()
     updated_at: Date
   
-    @OneToMany(() => TaskNote, (note) => note.task, { cascade: true })
-    notes: TaskNote[]
+    @OneToMany(() => TaskNote, (note) => note.taskCard)
+    notes: TaskNote[]; 
   }
   

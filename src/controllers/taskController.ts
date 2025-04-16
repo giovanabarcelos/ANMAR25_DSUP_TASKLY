@@ -67,4 +67,21 @@ export class TaskController {
       next(error)
     }
   }
+
+  async delete(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try{
+      const id = Number(req.params.id)
+      if(isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid task ID!' })
+      }
+      const task = await service.getTaskById(id)
+      if (!task) {
+        return res.status(400).json({ message: 'Task not found!' })
+      }
+      await service.delete(id)
+      res.status(200).json({ message: 'Task deleted successfully!'})
+    } catch(error) {
+      next(error)
+    }
+  }
 }
