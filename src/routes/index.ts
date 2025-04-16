@@ -1,11 +1,8 @@
 import { Router } from "express"
-import { taskController  } from "../controllers/taskController"
-import { validateTask } from "../middlewares/validateTask"
+import taskRoutes from "./taskRoutes"
 
+const router = Router()
 
-const routes = Router()
-const controller = new taskController()
+router.use("/", taskRoutes)
 
-routes.post('/tasks', validateTask, controller.create.bind(controller))
-
-export default routes
+export default router
