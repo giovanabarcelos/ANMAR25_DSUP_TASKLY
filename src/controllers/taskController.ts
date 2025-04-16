@@ -51,4 +51,20 @@ export class TaskController {
       next(error)
     }
   }
+
+  async update(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try {
+      const id = Number(req.params.id)
+      if(isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid task ID!' })
+      }
+      const updateTask = await service.update(id, req.body)
+      if(!updateTask) {
+        return res.status(400).json({ message: 'Task not found!' })
+      }
+      res.status(200).json(updateTask)
+    } catch(error) {
+      next(error)
+    }
+  }
 }

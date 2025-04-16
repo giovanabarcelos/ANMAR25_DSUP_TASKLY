@@ -39,4 +39,17 @@ export class TaskService {
       },
     })
   }
+
+  async update(id: number, data: Partial<TaskCard>): Promise<TaskCard | null> {
+    try {
+      const task = await taskCardRepository.findOne({ where: { id } })
+      if(!task) {
+        return null
+      }   
+      Object.assign(task, data)
+      return await taskCardRepository.save(task)
+    } catch(error: any) {
+      throw new Error(`Error updating task: ${error.message}`)
+    }
+  }
 }
