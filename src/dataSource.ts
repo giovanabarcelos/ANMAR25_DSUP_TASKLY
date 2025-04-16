@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { TaskCard } from "./entity/TaskCard";
-import { TaskNote } from "./entity/TaskNote";
-import dotenv from "dotenv";
+import "reflect-metadata"
+import { DataSource } from "typeorm"
+import { TaskCard } from "./entities/TaskCard"
+import { TaskNote } from "./entities/TaskNote"
+import dotenv from "dotenv"
 
-dotenv.config();
+dotenv.config()
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -18,4 +18,4 @@ export const AppDataSource = new DataSource({
   entities: [TaskCard, TaskNote],
   migrations: ["src/migrations/*.ts"],
   subscribers: [],
-});
+})

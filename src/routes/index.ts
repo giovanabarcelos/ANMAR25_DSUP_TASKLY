@@ -1,9 +1,11 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express"
+import { taskController  } from "../controllers/taskController"
+import { validateTask } from "../middlewares/validateTask"
 
-const router = Router();
 
-router.get("/",  (_, res: Response) => {
-  res.send("Working");
-});
+const routes = Router()
+const controller = new taskController()
 
-export default router;
+routes.post('/tasks', validateTask, controller.create.bind(controller))
+
+export default routes

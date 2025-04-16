@@ -5,36 +5,36 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
-  } from "typeorm";
-  import { TaskNote } from "./TaskNote";
+  } from "typeorm"
+  import { TaskNote } from "./TaskNote"
   
   @Entity()
   export class TaskCard {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
   
     @Column({ length: 100 })
-    title: string;
+    title: string
   
     @Column({ length: 255 })
-    description: string;
+    description: string
   
     @Column({ length: 50 })
-    category: string;
+    category: string
   
     @Column({ length: 20 })
-    priority: string;
+    priority: string
   
     @Column({ length: 20 })
-    status: string; 
+    status: string
 
     @CreateDateColumn()
-    created_at: Date;
+    created_at: Date
   
     @UpdateDateColumn()
-    updated_at: Date;
+    updated_at: Date
   
     @OneToMany(() => TaskNote, (note) => note.task, { cascade: true })
-    notes: TaskNote[];
+    notes: TaskNote[]
   }
   
