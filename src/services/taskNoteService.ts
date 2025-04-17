@@ -56,4 +56,14 @@ export class TaskNoteService {
     taskNoteRepository.merge(note, data)
     return await taskNoteRepository.save(note)
   }
+
+  async deleteNote(id: number): Promise<void> {
+    const note = await taskNoteRepository.findOne({ where: { id } });
+  
+    if (!note) {
+      throw new Error("Note not found")
+    }
+  
+    await taskNoteRepository.remove(note)
+  }
 }

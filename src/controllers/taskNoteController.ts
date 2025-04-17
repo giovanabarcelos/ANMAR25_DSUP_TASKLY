@@ -73,4 +73,22 @@ export class TaskNoteController {
     }
   }
 
+  async delete(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try {
+      const id = Number(req.params.id)
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid note ID!" })
+      }
+  
+      await service.deleteNote(id)
+      res.status(204).send()
+  
+    } catch (error) {
+      if (error instanceof Error && error.message === "Note not found") {
+        return res.status(404).json({ message: error.message })
+      }
+      next(error)
+    }
+  }
+
 }
