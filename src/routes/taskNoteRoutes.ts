@@ -7,5 +7,6 @@ const controller = new TaskNoteController()
 
 routes.post("/tasks/:taskId/notes", validateNote, controller.create.bind(controller))
 routes.get("/tasks/:taskId/notes", controller.listByTask.bind(controller))
+routes.get("/notes/:id", controller.getById.bind(controller))
 
 export default routes

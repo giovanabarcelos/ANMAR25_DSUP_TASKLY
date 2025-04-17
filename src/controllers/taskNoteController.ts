@@ -38,4 +38,22 @@ export class TaskNoteController {
       next(error)
     }
   }
+
+  async getById(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid note ID!' });
+      }
+  
+      const note = await service.getNoteById(id);
+      res.status(200).json(note);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Note not found') {
+        return res.status(404).json({ message: error.message });
+      }
+      next(error);
+    }
+  }
+
 }

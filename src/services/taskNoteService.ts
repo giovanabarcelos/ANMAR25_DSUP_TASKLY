@@ -32,4 +32,17 @@ export class TaskNoteService {
   
     return notes;
   }
+
+  async getNoteById(id: number) {
+     const note = await taskNoteRepository.findOne({
+      where: { id },
+      relations: ['taskCard'],
+     })
+     
+     if (!note) {
+      throw new Error('Note not found');
+    }
+  
+    return note;
+  }
 }
