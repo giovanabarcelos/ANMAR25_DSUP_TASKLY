@@ -17,4 +17,19 @@ export class TaskNoteService {
 
     return await taskNoteRepository.save(note)
   }
+
+  async getNotesByTask(taskId: number) {
+    const task = await taskCardRepository.findOne({ where: { id: taskId } });
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+  
+    const notes = await taskNoteRepository.find({
+      where: { taskCard: { id: taskId } },
+      relations: ['taskCard'],
+    });
+  
+    return notes;
+  }
 }
