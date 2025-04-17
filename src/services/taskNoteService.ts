@@ -45,4 +45,15 @@ export class TaskNoteService {
   
     return note;
   }
+  
+  async updateNote(id: number, data: Partial<TaskNote>) {
+    const note = await taskNoteRepository.findOneBy({ id })
+  
+    if (!note) {
+      throw new Error("Note not found")
+    }
+  
+    taskNoteRepository.merge(note, data)
+    return await taskNoteRepository.save(note)
+  }
 }
