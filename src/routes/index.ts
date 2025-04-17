@@ -1,8 +1,10 @@
 import { Router } from "express"
-import taskRoutes from "./taskRoutes"
+import taskCardRoutes from "./taskCardRoutes"
+import taskNoteRoutes from "./taskNoteRoutes"
 
 const router = Router()
 
-router.use("/", taskRoutes)
+router.use('/', taskCardRoutes)
+router.use('/', taskNoteRoutes)
 
 export default router

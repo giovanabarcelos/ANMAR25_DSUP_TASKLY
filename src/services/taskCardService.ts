@@ -3,7 +3,7 @@ import { taskCardRepository } from "../repositories/taskCardRepository"
 import { TaskCard } from "../entities/TaskCard"
 
 
-export class TaskService {
+export class TaskCardService {
   async create(data: Partial<TaskCard>): Promise<TaskCard> {
     try {
       const task = taskCardRepository.create(data)

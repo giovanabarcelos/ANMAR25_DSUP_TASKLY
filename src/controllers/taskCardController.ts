@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
-import { TaskService } from "../services/taskService"
+import { TaskCardService } from "../services/taskCardService"
 
-const service = new TaskService()
+const service = new TaskCardService()
 
 export class TaskController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
