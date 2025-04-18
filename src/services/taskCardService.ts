@@ -1,7 +1,11 @@
 
 import { taskCardRepository } from "../repositories/taskCardRepository"
 import { TaskCard } from "../entities/TaskCard"
+import { Like } from "typeorm";
+import { z } from "zod";
+import { taskFilterSchema } from "../middlewares/taskFilterValidation"
 
+type TaskFilter = z.infer<typeof taskFilterSchema>
 
 export class TaskCardService {
   async create(data: Partial<TaskCard>): Promise<TaskCard> {
@@ -68,6 +72,37 @@ export class TaskCardService {
       await taskCardRepository.delete(id)
     }catch(error: any) {
       throw new Error(`Error deleting task: ${error.message}`)
+    }
+  }
+
+
+  async filterTasks(query: TaskFilter): Promise<{
+    data: TaskCard[]
+    total: number
+    page: number
+    limit: number
+  }> {
+    const { title, category, priority, status, page, limit } = query
+
+    const where: any = {}
+    if (title) where.title = Like(`%${title}%`)
+    if (category) where.category = category
+    if (priority) where.priority = priority
+    if (status) where.status = status
+
+    const [tasks, total] = await taskCardRepository.findAndCount({
+      where,
+      relations: ["notes"],
+      order: { created_at: "DESC" },
+      skip: (page - 1) * limit,
+      take: limit,
+    })
+
+    return {
+      data: tasks,
+      total,
+      page,
+      limit,
     }
   }
 }

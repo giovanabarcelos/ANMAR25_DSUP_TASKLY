@@ -1,26 +1,32 @@
 import { Request, Response, NextFunction } from "express"
 import { TaskCardService } from "../services/taskCardService"
+import { TaskQueryParams } from "../types/taskQuery"
 
-const service = new TaskCardService()
 
 export class TaskController {
+  private service = new TaskCardService()
+
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const task = await service.create(req.body)
+      const task = await this.service.create(req.body)
       res.status(201).json(task)
     } catch (error) {
       next(error)
     }
   }
 
-  async list(_req: Request, res: Response, next: NextFunction): Promise<void> {
+  async list(_req: Request, res: Response, next: NextFunction): Promise<any> { 
     try {
-      const tasks = await service.getAll()
-      res.status(200).json(tasks)
+      const queryParams = res.locals.queryParams as TaskQueryParams
+      const tasks = await this.service.filterTasks(queryParams)
+      return res.status(200).json(tasks)
     } catch (error) {
       next(error)
     }
   }
+  
+  
+  
 
   async getTask(req: Request, res: Response, next: NextFunction): Promise<any> {
     try {
@@ -28,7 +34,7 @@ export class TaskController {
       if(isNaN(id)) {
         return res.status(400).json({ message: 'Invalid task ID!' })
       }
-      const task = await service.getTaskById(id)
+      const task = await this.service.getTaskById(id)
       if(!task) {
         return res.status(404).json({ message: 'Task not found!' })
       }
@@ -45,7 +51,7 @@ export class TaskController {
       if (!validStatus.includes(status)) {
         return res.status(400).json({ message: 'Invalid Status!' })
       }
-      const task = await service.getTaskByStatus(status)
+      const task = await this.service.getTaskByStatus(status)
       res.status(200).json(task)
     } catch(error) {
       next(error)
@@ -58,7 +64,7 @@ export class TaskController {
       if(isNaN(id)) {
         return res.status(400).json({ message: 'Invalid task ID!' })
       }
-      const updateTask = await service.update(id, req.body)
+      const updateTask = await this.service.update(id, req.body)
       if(!updateTask) {
         return res.status(400).json({ message: 'Task not found!' })
       }
@@ -74,11 +80,11 @@ export class TaskController {
       if(isNaN(id)) {
         return res.status(400).json({ message: 'Invalid task ID!' })
       }
-      const task = await service.getTaskById(id)
+      const task = await this.service.getTaskById(id)
       if (!task) {
         return res.status(400).json({ message: 'Task not found!' })
       }
-      await service.delete(id)
+      await this.service.delete(id)
       res.status(200).json({ message: 'Task deleted successfully!'})
     } catch(error) {
       next(error)
