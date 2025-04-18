@@ -75,7 +75,6 @@ export class TaskCardService {
     }
   }
 
-
   async filterTasks(query: TaskFilter): Promise<{
     data: TaskCard[]
     total: number

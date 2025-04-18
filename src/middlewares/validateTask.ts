@@ -9,8 +9,6 @@ const taskSchema = z.object({
   priority: z.enum(["Low", "Medium", "High"]),
 })
 
-
-
 export function validateTask(req: Request, res: Response, next: NextFunction): void {
   const validation = taskSchema.safeParse(req.body)
 

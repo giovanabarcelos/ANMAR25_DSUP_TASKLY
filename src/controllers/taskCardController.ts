@@ -25,9 +25,6 @@ export class TaskController {
     }
   }
   
-  
-  
-
   async getTask(req: Request, res: Response, next: NextFunction): Promise<any> {
     try {
       const id = Number(req.params.id)
